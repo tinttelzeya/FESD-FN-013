@@ -1,0 +1,109 @@
+<div class="container my-5">
+  <div class="row">
+    <!-- Registration Form Section -->
+    <div class="col-lg-5 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Course Registration</h4>
+        </div>
+        <div class="card-body">
+          
+          <!-- Success Alert (HTTP 201) -->
+          <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ successMessage }}
+            <button type="button" class="btn-close" (click)="successMessage = null"></button>
+          </div>
+
+          <!-- Error Alert (HTTP 500, 422, 400) -->
+          <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ errorMessage }}
+            <button type="button" class="btn-close" (click)="errorMessage = null"></button>
+          </div>
+
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            
+            <div class="mb-3">
+              <label class="form-label">Email Address (Username)</label>
+              <input type="email5" formControlName="userEmail" class="form-control" placeholder="name@example.com">
+              <div *ngIf="registerForm.get('userEmail')?.touched && registerForm.get('userEmail')?.invalid" class="text-danger small mt-1">
+                Valid email is required.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Password (8-15 characters)</label>
+              <input type="password" formControlName="userPassword" class="form-control" placeholder="Enter password">
+              <div *ngIf="registerForm.get('userPassword')?.touched && registerForm.get('userPassword')?.invalid" class="text-danger small mt-1">
+                Password must be between 8 and 15 characters.
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">First Name</label>
+                <input type="text" formControlName="userFirstName" class="form-control">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Last Name</label>
+                <input type="text" formControlName="userLastName" class="form-control">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Telephone Number (Numeric)</label>
+              <input type="text" formControlName="userTel" class="form-control" placeholder="0891234567">
+              <div *ngIf="registerForm.get('userTel')?.touched && registerForm.get('userTel')?.invalid" class="text-danger small mt-1">
+                Valid numeric telephone is required.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Date of Birth (YYYY-MM-DD)</label>
+              <input type="text" formControlName="dateOfBirth" class="form-control" placeholder="2012-05-26">
+              <div *ngIf="registerForm.get('dateOfBirth')?.touched && registerForm.get('dateOfBirth')?.invalid" class="text-danger small mt-1">
+                Format must be YYYY-MM-DD.
+              </div>
+            </div>
+
+            <button type="submit" class="instances btn btn-primary w-100">Register</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- User List Presentation Section -->
+    <div class="col-lg-7">
+      <div class="card shadow-sm">
+        <div class="card-header bg-secondary text-white">
+          <h4 class="mb-0">Registered Users List (Session Storage)</h4>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>Email</th>
+                  <th>Full Name</th>
+                  <th>Telephone</th>
+                  <th>Age (Years)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let u of users">
+                  <td>{{ u.userEmail }}</td>
+                  <td>{{ getFullName(u) }}</td>
+                  <td>{{ u.userTel }}</td>
+                  <td><span class="badge bg-info text-dark">{{ getUserAge(u) }}</span></td>
+                </tr>
+                <tr *ngIf="users.length === 0">
+                  <td colspan="4" class="text-center text-muted">No users registered yet.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
